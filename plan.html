@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRUD - Plan de Cuentas Completo</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body { background-color: #f9fafb; }
+    .container { max-width: 1200px; margin: auto; }
+  </style>
+</head>
+<body class="p-6">
+  <div class="container bg-white p-6 rounded shadow">
+    <div class="flex items-center mb-6">
+      <img src="inicio01.png" alt="Logo SIFO" class="w-20 mr-4">
+      <h1 class="text-2xl font-bold">Plan de Cuentas</h1>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+      <input type="text" id="puc" placeholder="PUC" class="p-2 border rounded">
+      <input type="text" id="centroCostos" placeholder="Centro Costos" class="p-2 border rounded">
+      <input type="text" id="concepto" placeholder="Concepto" class="p-2 border rounded">
+      <input type="text" id="naturaleza" placeholder="Naturaleza (Db/Cr)" class="p-2 border rounded">
+      <input type="text" id="tipoCuenta" placeholder="Tipo Cuenta" class="p-2 border rounded">
+      <input type="text" id="nivel" placeholder="Nivel" class="p-2 border rounded">
+      <input type="text" id="activoTributario" placeholder="Activo Tributario" class="p-2 border rounded">
+      <input type="text" id="contable" placeholder="Contable" class="p-2 border rounded">
+      <input type="text" id="infoFiscalTI" placeholder="TI" class="p-2 border rounded">
+      <input type="text" id="f350" placeholder="F350" class="p-2 border rounded">
+      <input type="text" id="f300" placeholder="F300" class="p-2 border rounded">
+      <input type="text" id="exogena" placeholder="Exógena" class="p-2 border rounded">
+      <input type="text" id="ica" placeholder="ICA" class="p-2 border rounded">
+      <input type="text" id="uvt" placeholder="UVT" class="p-2 border rounded">
+    </div>
+    <button onclick="agregarCuenta()" class="bg-blue-600 text-white px-4 py-2 rounded mb-4">Agregar</button>
+    <div class="overflow-x-auto">
+      <table class="min-w-full table-auto border">
+        <thead class="bg-gray-200">
+          <tr>
+            <th class="px-2 py-1 border">PUC</th>
+            <th class="px-2 py-1 border">Centro Costos</th>
+            <th class="px-2 py-1 border">Concepto</th>
+            <th class="px-2 py-1 border">Naturaleza</th>
+            <th class="px-2 py-1 border">Tipo</th>
+            <th class="px-2 py-1 border">Nivel</th>
+            <th class="px-2 py-1 border">AT</th>
+            <th class="px-2 py-1 border">CT</th>
+            <th class="px-2 py-1 border">TI</th>
+            <th class="px-2 py-1 border">F350</th>
+            <th class="px-2 py-1 border">F300</th>
+            <th class="px-2 py-1 border">Exógena</th>
+            <th class="px-2 py-1 border">ICA</th>
+            <th class="px-2 py-1 border">UVT</th>
+            <th class="px-2 py-1 border">Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-cuentas"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    let cuentas = [];
+
+    function agregarCuenta() {
+      const fields = [
+        'puc','centroCostos','concepto','naturaleza','tipoCuenta','nivel','activoTributario','contable',
+        'infoFiscalTI','f350','f300','exogena','ica','uvt'
+      ];
+      const cuenta = {};
+      let allFilled = true;
+      fields.forEach(id => {
+        const val = document.getElementById(id).value;
+        cuenta[id] = val;
+        if (!val) allFilled = false;
+      });
+      if (allFilled) {
+        cuentas.push(cuenta);
+        renderizarTabla();
+        fields.forEach(id => document.getElementById(id).value = '');
+      }
+    }
+
+    function eliminarCuenta(index) {
+      cuentas.splice(index, 1);
+      renderizarTabla();
+    }
+
+    function renderizarTabla() {
+      const tbody = document.getElementById('tabla-cuentas');
+      tbody.innerHTML = '';
+      cuentas.forEach((cuenta, index) => {
+        tbody.innerHTML += `
+          <tr class="text-center text-sm">
+            ${Object.values(cuenta).map(val => `<td class='border px-2 py-1'>${val}</td>`).join('')}
+            <td class='border px-2 py-1'><button onclick="eliminarCuenta(${index})" class="bg-red-500 text-white px-2 py-1 rounded">Eliminar</button></td>
+          </tr>`;
+      });
+    }
+  </script>
+</body>
+</html>
